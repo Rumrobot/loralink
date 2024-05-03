@@ -1,3 +1,6 @@
+rpi:
+	go build hello.go
+
 hello:
 	GOOS=linux GOARCH=arm GOARM=7 \
 	go build hello.go
