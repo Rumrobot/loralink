@@ -11,14 +11,14 @@ import (
 	//    "os"
 	// "bytes"
 	"net/http"
-
+	"io/ioutil"
 	"lora"
 )
 
 const (
 	CodingRate4_5 = 0x01 //  7     0     LoRa coding rate: 4/5
 	CodingRate4_6 = 0x02 //  7     0                       4/6
-	CodingRate4_7 = 0x03 //  7     0                       4/7
+	CodingRate4_7 = 0x03 //  	7     0                       4/7
 	CodingRate4_8 = 0x04 //  7     0                       4/8
 )
 const (
@@ -93,7 +93,13 @@ func main() {
 		`)
 
 		if data != "error" {
-			http.Post("https://rumrobot.dk/temp", "application/json", request)
+			fmt.Println("Sending data to server")
+			response, error := http.Post("https://rumrobot.dk/temp", "application/json", request)
+			if error != nil {
+				panic(error)
+			}
+			content, _ := ioutil.ReadAll(response.Body)
+			fmt.Println(string(content))
 		}
 
 		time.Sleep(8 * time.Second)
